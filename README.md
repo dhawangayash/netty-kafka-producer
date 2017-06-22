@@ -22,7 +22,7 @@ Details on how `ChannelHandlers` and `ChannelPipeline` work together.
 `ChannelPipeline` has a 
 head and a tail. The head is the Socket facing side (Endpoint side) and the tail is the kafka facing point (Server side). 
 
-![alt text](file:///Users/dhawangayash/Desktop/netty.png "hello world")
+![alt text](/img/netty.png "hello world")
 
 ### Flow of a message inside a ChannelPipeline:
 1. Message enters through the head of the pipeline. 
@@ -34,7 +34,7 @@ head and a tail. The head is the Socket facing side (Endpoint side) and the tail
 ##ChannelHandler
 `ChannelHandlers`s are of two kinds as given in the image below
 
-![alt text](file:///Users/dhawangayash/Desktop/Netty_ChannelHandlers.png "ChannelHandlers")
+![alt text](/img/Netty_ChannelHandlers.png "ChannelHandlers")
 
 
 `ChannelHandler` are assigned a `ChannelHandlerContext`  are added to a `ChannelPipeline` 
