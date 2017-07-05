@@ -53,6 +53,7 @@ Second Method - causes the message to originate from the **next** handler in the
 `ChannelHandlers` have a lot of **_adapters_**. We are mostly interested in `SimpleChannelInboundHandler<T>` [A subclass of `ChannelInboundHandlerAdapter`]
 
 #### SimpleChannelInboundHandler
+This is the most frequently handler in any application. Since this handler receives a decoded message and applies business logic to the data. The `channelRead0(ChannelHandlerContext, T)` is the most important method in the handler. *Just remember do not block the current I/O thread.* 
 ```
 YourBusinessLogic extends SimpleChannelInboundHandler<T>()
 ```
