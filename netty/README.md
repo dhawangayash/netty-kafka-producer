@@ -24,7 +24,9 @@
 mvn clean install
 ```
 ``` 
-java -Dio.netty.recycler.maxCapacity=0 -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG -Dserver=localhost:9092 -Dtopic=test_topic -jar target/netty4-httpserver-0.0.1-jar-with-dependencies.jar com.netty.httpserver.HttpServerNetty4
+java -Dio.netty.recycler.maxCapacity=0 
+-Dio.netty.leakDetectionLevel=advanced 
+ -Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG -bootstrap.servers=localhost:9092 -Dtopic=test_topic -jar target/netty4-httpserver-0.0.1-jar-with-dependencies.jar com.netty.httpserver.HttpServerNetty4
 ```
 
 ### Issue
