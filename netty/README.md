@@ -36,7 +36,7 @@ java
 ```
 
 ### Issue
-~~Memory LEAK in load testing. I see memory leaks when Kafka broker applies back pressure on the producer. Owing to this there seems to be memory leaks when pumping messages. ~~
+~~Memory LEAK in load testing. I see memory leaks when Kafka broker applies back pressure on the producer. Owing to this there seems to be memory leaks when pumping messages.~~
 
 ### Fix
 This issue was fixed and the PR has the updated fix. Fixed using the following links:
