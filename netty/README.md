@@ -35,7 +35,7 @@ java
 -jar target/netty4-httpserver-0.0.1-jar-with-dependencies.jar com.netty.httpserver.HttpServerNetty4
 ```
 
-~~### Issue
+~~ ### Issue
 Memory LEAK in load testing. I see memory leaks when Kafka broker applies back pressure on the producer. Owing to this there seems to be memory leaks when pumping messages. ~~
 
 This issue was fixed and the PR has the updated fix. Fixed using the following links:
