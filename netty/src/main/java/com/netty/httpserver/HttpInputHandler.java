@@ -69,7 +69,7 @@ public class HttpInputHandler extends ChannelInboundHandlerAdapter {
                 }
                 LOG.debug(response.toString());
             } finally {
-                buf.release();
+                buf.release();  // Memory issues because you were not free the msg after consumption
             }
         }
     }
