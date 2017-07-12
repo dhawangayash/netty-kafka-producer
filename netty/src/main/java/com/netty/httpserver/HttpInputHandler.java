@@ -42,31 +42,35 @@ public class HttpInputHandler extends ChannelInboundHandlerAdapter {
             FullHttpRequest fReq = (FullHttpRequest) req;
             Charset utf8 = CharsetUtil.UTF_8;
             ByteBuf buf = fReq.content();
-            String in = buf.toString(utf8);
-            buf.clear();
-            if (in == null || in.isEmpty()) {
-                in = "{\"application_nm\":\"netty4server\",\"type\":\"http\"}";
-            }
-            LOG.debug("Request ==> '" + in + "'");
-            System.out.println(" Request ==> " + in);
-            postToKafka.write2Kafka(in);
+            try {
+                String in = buf.toString(utf8);
+                buf.clear();
+                if (in == null || in.isEmpty()) {
+                    in = "{\"application_nm\":\"netty4server\",\"type\":\"http\"}";
+                }
+                LOG.debug("Request ==> '" + in + "'");
+                System.out.println(" Request ==> " + in);
+                postToKafka.write2Kafka(in);
 
-            if (HttpHeaders.is100ContinueExpected(req)) {
-                ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONTINUE));
+                if (HttpHeaders.is100ContinueExpected(req)) {
+                    ctx.write(new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONTINUE));
+                }
+                boolean keepAlive = HttpHeaders.isKeepAlive(req);
+                FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
+                        Unpooled.wrappedBuffer(RESP.getBytes()));
+                response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain");
+                response.headers().set(HttpHeaders.Names.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+                response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, response.content().readableBytes());
+                if (!keepAlive) {
+                    ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+                } else {
+                    response.headers().set(CONNECTION, Values.KEEP_ALIVE);
+                    ctx.writeAndFlush(response);
+                }
+                LOG.debug(response.toString());
+            } finally {
+                buf.release();
             }
-            boolean keepAlive = HttpHeaders.isKeepAlive(req);
-            FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK,
-                    Unpooled.wrappedBuffer(RESP.getBytes()));
-            response.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain");
-            response.headers().set(HttpHeaders.Names.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
-            response.headers().set(HttpHeaders.Names.CONTENT_LENGTH, response.content().readableBytes());
-            if (!keepAlive) {
-                ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
-            } else {
-                response.headers().set(CONNECTION, Values.KEEP_ALIVE);
-                ctx.writeAndFlush(response);
-            }
-            LOG.debug(response.toString());
         }
     }
 
